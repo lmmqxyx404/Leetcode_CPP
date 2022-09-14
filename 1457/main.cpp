@@ -1,35 +1,29 @@
 #include "bits/stdc++.h"
 #include "../common/common.h"
 using namespace std;
-int ans;
-bool is_palindromic(vector<int> &sss)
+int ans, mmmp[11];
+bool is_palindromic2()
 {
-  int mp[11] = {0};
-  unordered_set<int> st;
-  for (auto &i : sss)
+  int odd_num = 0;
+  for (int i = 1; i < 10; i++)
   {
-    mp[i]++;
-    st.insert(i);
-  }
-  int odd_num;
-  for (auto &i : st)
-  {
-    if (mp[i] % 2)
+    if (mmmp[i] % 2)
     {
       odd_num++;
       if (odd_num > 1)
         return false;
     }
+    /* code */
   }
   return true;
 }
-void dfs(TreeNode *root, vector<int> &store)
+void dfs(TreeNode *root)
 {
-  store.push_back(root->val);
+  mmmp[root->val]++;
   bool flag_left = false, f_right = false;
   if (root->left != nullptr)
   {
-    dfs(root->left, store);
+    dfs(root->left);
   }
   else
   {
@@ -37,21 +31,20 @@ void dfs(TreeNode *root, vector<int> &store)
   }
   if (root->right != nullptr)
   {
-    dfs(root->right, store);
+    dfs(root->right);
   }
   else
   {
     f_right = true;
   }
-  ans += flag_left && f_right && is_palindromic(store);
-  store.pop_back();
+  ans += flag_left && f_right && is_palindromic2();
+  mmmp[root->val]--;
 }
 int pseudoPalindromicPaths(TreeNode *root)
 {
-  vector<int> store;
   if (root == nullptr)
     return 0;
-  dfs(root, store);
+  dfs(root);
   return ans;
 }
 int main()
