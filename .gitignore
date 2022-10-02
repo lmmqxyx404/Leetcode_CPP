@@ -6,3 +6,4 @@
 
 # The folder should be ignored
 .vscode/
+*/.cph/
